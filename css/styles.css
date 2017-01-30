@@ -1,0 +1,13 @@
+.search-box {
+    display: none;
+}
+
+.modal-header {
+    border: none;
+}
+
+.tab-login,
+.tab-register {
+    width: 50%;
+    text-align: center;
+}
