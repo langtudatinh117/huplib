@@ -31,6 +31,17 @@
     font-size: 14px;
 }
 
+.dropdown-menu>li>a {
+    font-size: 15px;
+    padding: 10px 12px;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a {
+        color: #000;
+    }
+}
+
 
 /*HEADER*/
 

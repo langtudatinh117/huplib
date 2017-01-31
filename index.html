@@ -55,6 +55,16 @@
                             </div>
                         </form>
                     </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tài khoản <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" class="">Thông tin tài khoản</a></li>
+                            <li><a href="#" class="">Thông báo <span class="pull-right badge">5</span></a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" class="">Đăng xuất</a></li>
+
+                        </ul>
+                    </li>
                     <li class="login"><a href="#">Đăng nhập</a></li>
                     <li class="register"><a href="#">Đăng ký</a></li>
                     <li class="search-btn hidden-xs"><a href="#toggle-search"><span class="[ glyphicon glyphicon-search ]"></span></a></li>
@@ -75,8 +85,7 @@
 
         </nav>
 
-
-
+        <!--Header-->
         <div class="jumbotron header-jumbotron">
             <div class="container">
                 <p class="text-center text-primary" style="font-size: 40px"><b>Thư viện tài liệu Dược học</b></p>
@@ -94,7 +103,7 @@
     </div>
 
 
-    <!--Modal-->
+    <!--Modal login/register-->
 
     <div class="modal fade" id="login-register" role="dialog">
         <div class="modal-dialog">
@@ -111,11 +120,11 @@
                             <form role="form">
                                 <div class="form-group">
                                     <label for="usrname"><span class="glyphicon glyphicon-user"></span> Tên đăng nhập</label>
-                                    <input type="text" class="form-control" id="usrname" placeholder="tên đăng nhập">
+                                    <input type="text" class="form-control" id="usrname" maxlength="32" placeholder="tên đăng nhập">
                                 </div>
                                 <div class="form-group">
                                     <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Mật khẩu</label>
-                                    <input type="password" class="form-control" id="psw" placeholder="mật khẩu">
+                                    <input type="password" class="form-control" id="psw" maxlength="32" placeholder="mật khẩu">
                                 </div>
                                 <div class="checkbox">
                                     <label><input type="checkbox" value="" checked>Ghi nhớ </label>
@@ -179,7 +188,7 @@
         </div>
 
     </div>
-    <!--end modal-->
+    <!--end modal login/register-->
 
 
 
