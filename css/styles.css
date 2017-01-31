@@ -1,3 +1,5 @@
+/*NAVBAR*/
+
 .search-box {
     display: none;
 }
@@ -27,4 +29,16 @@
 
 .navbar-default .navbar-nav>li>a>span {
     font-size: 14px;
+}
+
+
+/*HEADER*/
+
+.header-jumbotron {
+    background-color: #f3f3f3 !important;
+    background-image: url("../img/header_bg.svg");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 500px 500px;
+    text-align: center;
 }
