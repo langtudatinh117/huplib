@@ -44,14 +44,25 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="visible-xs">
+                        <form action="http://bootsnipp.com/search" method="GET" role="search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="q" placeholder="Search for snippets">
+                                <span class="input-group-btn">
+									<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                                <button class="btn btn-danger" type="reset"><span class="glyphicon glyphicon-remove"></span></button>
+                                </span>
+                            </div>
+                        </form>
+                    </li>
                     <li class="login"><a href="#">Đăng nhập</a></li>
                     <li class="register"><a href="#">Đăng ký</a></li>
-                    <li class="search-btn"><a href="#toggle-search"><span class="[ glyphicon glyphicon-search ]"></span></a></li>
+                    <li class="search-btn hidden-xs"><a href="#toggle-search"><span class="[ glyphicon glyphicon-search ]"></span></a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
 
-            <div class="search-box">
+            <div class="search-box hidden-xs">
                 <form action="http://bootsnipp.com/search" method="GET" role="search">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" placeholder="Tìm kiếm tài liệu Dược học">
