@@ -1,33 +1,36 @@
 $(document).ready(function() {
     // *********Register***********
 
-    $(".regFullName").keyup(function() {
+    $(".regFullName").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         if ($(this).val().length >= 2 && $(this).val().length <= 40) {
             $(this).parent().addClass("has-success");
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
 
-    $(".regClass").keyup(function() {
+    $(".regClass").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         if ($(this).val().length >= 4 && $(this).val().length <= 6) {
             $(this).parent().addClass("has-success");
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
 
-    $(".regUserName").keyup(function() {
+    $(".regUserName").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         if ($(this).val().length >= 6 && $(this).val().length <= 32) {
             $(this).parent().addClass("has-success");
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
-    $(".regEmail").keyup(function() {
+    $(".regEmail").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         let email = $(this).val(); //keyup form to id or containment selector
         let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/igm;
@@ -36,23 +39,26 @@ $(document).ready(function() {
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
-    $(".regPassword").keyup(function() {
+    $(".regPassword").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         if ($(this).val().length >= 6 && $(this).val().length <= 24) {
             $(this).parent().addClass("has-success");
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
 
-    $(".regConfirmPassword").keyup(function() {
+    $(".regConfirmPassword").keyup(function(e) {
         $(this).parent().removeClass("has-success has-error");
         if ($(this).val() === $(".regPassword").val()) {
             $(this).parent().addClass("has-success");
         } else {
             $(this).parent().addClass("has-error");
         }
+        if (e.keyCode == 13) $(".regButton").click();
     });
 
     $(".regButton").click(function() {
@@ -90,6 +96,57 @@ $(document).ready(function() {
     });
 
     // end register
+
+    //**********************
+    // LOGIN
+    //********************* */
+    $(".lgUserName").keyup(function(e) {
+        $(this).parent().removeClass("has-success has-error");
+        if ($(this).val().length >= 6 && $(this).val().length <= 32) {
+            $(this).parent().addClass("has-success");
+        } else {
+            $(this).parent().addClass("has-error");
+        }
+        if (e.keyCode == 13) $(".lgButton").click();
+    });
+
+    $(".lgPassWord").keyup(function(e) {
+        $(this).parent().removeClass("has-success has-error");
+        if ($(this).val().length >= 6 && $(this).val().length <= 24) {
+            $(this).parent().addClass("has-success");
+        } else {
+            $(this).parent().addClass("has-error");
+        }
+        if (e.keyCode == 13) $(".lgButton").click();
+    });
+
+    $(".lgButton").click(function() {
+        if ($(".lgUserName").val().length == 0) $(".lgUserName").parent().addClass("has-error");
+        if ($(".lgPassWord").val().length == 0) $(".lgPassWord").parent().addClass("has-error");
+        if ($(".lgUserName").parent().hasClass('has-success') && $(".lgPassWord").parent().hasClass('has-success')) {
+            fetch('login', {
+                    method: 'post',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        'username': $(".lgUserName").val(),
+                        'password': $(".lgPassWord").val()
+                    })
+                })
+                .then(res => {
+                    if (res.ok) return res.json()
+                })
+                .then(data => {
+                    if (data.status == 'error') {
+                        $(".lgMessageError").html(data.message);
+                        $(".lgMessageError").removeClass("hide");
+                    } else if (data.status == 'success') {
+                        window.location.reload(true)
+                    }
+                })
+        }
+    });
+
+    //end LOGIN*************8*****
 
     $(".search-btn, .quit-search-btn").click(function() {
         $(".search-box").toggle();

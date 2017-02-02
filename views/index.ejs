@@ -117,25 +117,25 @@
                 <div class="modal-body">
                     <div class="tab-content">
                         <div id="login" class="tab-pane fade">
-                            <form role="form" action="/login" method="POST">
-                                <div class="form-group">
-                                    <label for="username"><span class="glyphicon glyphicon-user"></span> Tên đăng nhập</label>
-                                    <input type="text" class="form-control" name="username" placeholder="tên đăng nhập">
-                                </div>
-                                <div class="form-group">
-                                    <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Mật khẩu</label>
-                                    <input type="password" class="form-control" name="password" maxlength="32" placeholder="mật khẩu">
-                                </div>
-                                <div class="checkbox">
-                                    <label><input type="checkbox" value="" checked>Ghi nhớ </label>
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-success btn-block" style="font-size: 16px">ĐĂNG NHẬP</button>
-                                </div>
-                                <div class="form-group">
-                                    <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Quên mật khẩu</a>
-                                </div>
-                            </form>
+                            <div class="lgMessageError text-center alert alert-danger hide"></div>
+                            <div class="form-group">
+                                <label for="username"><span class="glyphicon glyphicon-user"></span> Tên đăng nhập</label>
+                                <input type="text" class="form-control lgUserName" maxlength="32" placeholder="tên đăng nhập">
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><span class="glyphicon glyphicon-eye-open"></span> Mật khẩu</label>
+                                <input type="password" class="form-control lgPassWord" maxlength="24" placeholder="mật khẩu">
+                            </div>
+                            <div class="checkbox">
+                                <label><input type="checkbox" value="" checked>Ghi nhớ </label>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-success btn-block lgButton" style="font-size: 16px">ĐĂNG NHẬP</button>
+                            </div>
+                            <div class="form-group">
+                                <a href="#"><i class="fa fa-question-circle" aria-hidden="true"></i> Quên mật khẩu</a>
+                            </div>
+
                             <!--login facebook google-->
 
                             <div class="row">

@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const jwt = require('jsonwebtoken');
-const secretKey = require('uuid/v4');
+const nJwt = require('njwt');
+const secretKey = require('uuid/v4')();
 const app = express();
 
 var db;
@@ -58,12 +58,40 @@ app.post('/register', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-    db.collection('acc').findOne({ 'username': req.body.username }, function(err, info) {
+    db.collection('acc').findOne({ 'username': req.body.username }, function(err, result) {
         if (err) {
             console.log(err)
-            res.redirect('/');
-        };
-        console.log(info);
+            res.json({ 'status': 'error', 'message': '<b>Có lỗi đã xảy ra. Vui lòng đăng nhập lại sau.</b>' })
+        } else if (result === null) {
+            res.json({ 'status': 'error', 'message': '<b>Tên đăng nhập không tồn tại</b>' });
+        } else {
+            bcrypt.compare(req.body.password, result.password, function(err, result) {
+                if (err) {
+                    console.log(err);
+                    res.json({ 'status': 'error', 'message': '<b>Đã có lỗi xảy ra. Vui lòng đăng nhập lại sau</b>' });
+                } else if (result) {
+                    console.log(result.email);
+                    let claims = {
+                        sub: req.body.username
+                    }
+                    let jwt = nJwt.create(claims, secretKey, 'HS512');
+                    jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000));
+                    let token = jwt.compact();
+                    console.log(token);
+
+                    nJwt.verify(token, secretKey, 'HS512', function(err, verifiedJwt) {
+                        if (err) {
+                            console.log(err); // Token has expired, has been tampered with, etc
+                        } else {
+                            console.log(verifiedJwt); // Will contain the header and body
+                        }
+                    });
+                    res.json({ 'status': 'success' });
+                } else {
+                    res.json({ 'status': 'error', 'message': '<b>Mật khẩu không đúng</b>' });
+                }
+            });
+        }
     });
 
 })
