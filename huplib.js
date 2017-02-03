@@ -1,21 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
-const bcrypt = require('bcrypt');
+const User = require('./model/user');
+var bcrypt = require('bcrypt');
 const saltRounds = 10;
 const nJwt = require('njwt');
 const secretKey = require('uuid/v4')();
 const app = express();
-
-var db;
-
-MongoClient.connect('mongodb://daoan:csfQ3zMfgL2NXk7T@ds137759.mlab.com:37759/huplib', (err, database) => {
-    if (err) return console.log(err);
-    db = database;
-    app.listen(3000, () => {
-        console.log('listening on 3000');
-    });
-})
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -30,47 +20,28 @@ app.get('/', (req, res) => {
 
 
 app.post('/register', (req, res) => {
-    db.collection('acc').findOne({
-        $or: [
-            { 'username': req.body.username },
-            { 'email': req.body.email }
-        ]
-    }, (err, result) => {
-        if (result === null) {
-            bcrypt.hash(req.body.password, saltRounds).then(function(hash) {
-                req.body.password = hash;
-                db.collection('acc').save(req.body, (err, result) => {
-                    if (err) return console.log(err);
-                    console.log('saved to database');
-                    res.json({ 'status': 'success' })
-                })
-            });
-        } else {
-            let json_respon = { 'status': 'error', 'message': '' };
-            if (result.email === req.body.email) json_respon.message += '<li><b>Email đã được đăng ký</b></li>';
-            if (result.username === req.body.username) json_respon.message += '<li><b>Tên đăng nhập đã được sử dụng</b></li>';
-            res.json(json_respon);
-        }
-    })
-
-
-
+    var acc = new User(req.body);
+    acc.save()
+        .then(function(user) {
+            res.json({ 'status': 'success' })
+        })
+        .catch(function(err) {
+            if (err.message.search(/username_. dup key/i) != -1) {
+                res.json({ 'status': 'error', 'message': '<li><b>Tên đăng nhập đã được sử dụng</b></li>' });
+            } else if (err.message.search(/email_. dup key/i) != -1) {
+                res.json({ 'status': 'error', 'message': '<li><b>Email đã được đăng ký</b></li>' });
+            }
+        })
 })
 
 app.post('/login', (req, res) => {
-    db.collection('acc').findOne({ 'username': req.body.username }, function(err, result) {
-        if (err) {
-            console.log(err)
-            res.json({ 'status': 'error', 'message': '<b>Có lỗi đã xảy ra. Vui lòng đăng nhập lại sau.</b>' })
-        } else if (result === null) {
-            res.json({ 'status': 'error', 'message': '<b>Tên đăng nhập không tồn tại</b>' });
-        } else {
-            bcrypt.compare(req.body.password, result.password, function(err, result) {
-                if (err) {
-                    console.log(err);
-                    res.json({ 'status': 'error', 'message': '<b>Đã có lỗi xảy ra. Vui lòng đăng nhập lại sau</b>' });
-                } else if (result) {
-                    console.log(result.email);
+    User.findOne({ 'username': req.body.username })
+        .then(function(user) {
+            bcrypt.compare(req.body.password, user.password, function(err, result) {
+                if (!result) {
+                    res.json({ 'status': 'error', 'message': '<b>Mật khẩu không chính xác</b>' });
+                } else {
+                    console.log(user.email);
                     let claims = {
                         sub: req.body.username
                     }
@@ -87,11 +58,16 @@ app.post('/login', (req, res) => {
                         }
                     });
                     res.json({ 'status': 'success' });
-                } else {
-                    res.json({ 'status': 'error', 'message': '<b>Mật khẩu không đúng</b>' });
                 }
-            });
-        }
-    });
+            })
+        })
+        .catch(function(err) {
+            res.json({ 'status': 'error', 'message': '<b>Tên đăng nhập không tồn tại</b>' })
+        })
+
 
 })
+
+app.listen(3000, () => {
+    console.log('listening on 3000');
+});
