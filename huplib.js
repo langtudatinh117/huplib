@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const User = require('./model/user');
 var bcrypt = require('bcrypt');
+var token = require('./lib/token');
 const saltRounds = 10;
-const nJwt = require('njwt');
-const secretKey = require('uuid/v4')();
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -41,22 +41,8 @@ app.post('/login', (req, res) => {
                 if (!result) {
                     res.json({ 'status': 'error', 'message': '<b>Mật khẩu không chính xác</b>' });
                 } else {
-                    console.log(user.email);
-                    let claims = {
-                        sub: req.body.username
-                    }
-                    let jwt = nJwt.create(claims, secretKey, 'HS512');
-                    jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000));
-                    let token = jwt.compact();
-                    console.log(token);
-
-                    nJwt.verify(token, secretKey, 'HS512', function(err, verifiedJwt) {
-                        if (err) {
-                            console.log(err); // Token has expired, has been tampered with, etc
-                        } else {
-                            console.log(verifiedJwt); // Will contain the header and body
-                        }
-                    });
+                    console.log(token.create(req.body.username));
+                    console.log(token.verify(token.create(req.body.username)));
                     res.json({ 'status': 'success' });
                 }
             })
